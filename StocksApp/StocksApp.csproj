@@ -7,4 +7,8 @@
     <UserSecretsId>03f0d82b-1862-4005-8fc4-eadd36cc083e</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
+  </ItemGroup>
+
 </Project>
