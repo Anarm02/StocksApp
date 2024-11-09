@@ -18,10 +18,34 @@
                             Stocks
                         </h1>
                     </div>
-                    <div class="flex-1">
-                        Login
+                    <div class="flex-1 ">
+                        <input class="search-text" type="text" placeholder="Stock Search" name="name" value="" />
+                        <i class="fa-solid fa-gear"></i>
+                        <button class="button button-blue-back login-button ml">Login</button>
+
                     </div>
                 </div>
+            </div>
+            <div class="navbar mb">
+                <ul>
+                    @if (ViewBag.CurrentUrl == "~/Trade/Index")
+                    {
+                        <li><a href="~/Trade/Index" class="nav-active">Trade</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="~/Trade/Index">Trade</a></li>
+                    }
+
+                    @if (ViewBag.CurrentUrl == "~/Trade/AllOrders")
+                    {
+                        <li><a href="~/Trade/AllOrders" class="nav-active">Orders</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="~/Trade/AllOrders">Orders</a></li>
+                    }
+                </ul>
             </div>
             @RenderBody()
         </div>

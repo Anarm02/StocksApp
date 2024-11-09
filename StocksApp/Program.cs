@@ -1,3 +1,5 @@
+using ServiceLayer.ServiceContracts;
+using ServiceLayer.Services;
 using StocksApp.ServiceContracts;
 using StocksApp.Services;
 
@@ -11,6 +13,7 @@ namespace StocksApp
 			builder.Services.AddControllersWithViews();
 			builder.Services.AddHttpClient();
 			builder.Services.AddScoped<IFinnhubService,FinnhubService>();
+			builder.Services.AddSingleton<IStocksService,StocksService>();
 			var app = builder.Build();
 
 			app.UseStaticFiles();

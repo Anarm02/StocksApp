@@ -41,7 +41,8 @@ namespace ServiceLayer.Services
 
 		public List<BuyOrderResponse> ListBuyOrders()
 		{
-			return _buyOrders.Select(bo=>bo.ToBuyOrderResponse()).ToList();
+			var result = _buyOrders.Select(bo => bo.ToBuyOrderResponse()).ToList();
+			return result;
 		}
 
 		public List<SellOrderResponse> ListSellOrders()
