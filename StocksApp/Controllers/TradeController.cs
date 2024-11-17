@@ -2,6 +2,8 @@
 using EntityLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 using ServiceLayer.ServiceContracts;
 using StocksApp.Models;
 using StocksApp.ServiceContracts;
@@ -33,7 +35,8 @@ namespace StocksApp.Controllers
 			{
 				StockSymbol = _tradingOptions.Value.DefaultSymbol,
 			};
-			if(company != null && data!=null) {
+			if (company != null && data != null)
+			{
 				stock = new StockTrade { StockSymbol = company["ticker"].ToString(), StockName = company["name"].ToString(), Price = Convert.ToDouble(data["c"].ToString()) };
 			}
 
@@ -41,7 +44,7 @@ namespace StocksApp.Controllers
 		}
 		[Route("trade/BuyOrder")]
 		[HttpPost]
-		public IActionResult BuyOrder(BuyOrderRequest buyOrder)
+		public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrder)
 		{
 			buyOrder.DateAndTimeOfOrder = DateTime.Now;
 			ModelState.Clear();
@@ -50,15 +53,15 @@ namespace StocksApp.Controllers
 			{
 				ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
 				StockTrade stockTrade = new StockTrade() { StockName = buyOrder.StockName, Quantity = buyOrder.Quantity, StockSymbol = buyOrder.StockSymbol };
-				return View("Index",stockTrade);
+				return View("Index", stockTrade);
 			}
-			
-			var result=_stocksService.CreateBuyOrder(buyOrder);
+
+			var result = await _stocksService.CreateBuyOrder(buyOrder);
 			return RedirectToAction("AllOrders");
 		}
 		[Route("trade/SellOrder")]
 		[HttpPost]
-		public IActionResult SellOrder(SellOrderRequest sellOrder)
+		public async Task<IActionResult> SellOrder(SellOrderRequest sellOrder)
 		{
 			sellOrder.DateAndTimeOfOrder = DateTime.Now;
 			ModelState.Clear();
@@ -67,22 +70,39 @@ namespace StocksApp.Controllers
 			{
 				ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
 				StockTrade stockTrade = new StockTrade() { StockName = sellOrder.StockName, Quantity = sellOrder.Quantity, StockSymbol = sellOrder.StockSymbol };
-				return View("index",stockTrade);
+				return View("index", stockTrade);
 			}
 
-			var result=_stocksService.CreateSellOrder(sellOrder);
+			var result = await _stocksService.CreateSellOrder(sellOrder);
 			return RedirectToAction("AllOrders");
 		}
 		[Route("trade/AllOrders")]
-		public IActionResult  AllOrders()
+		public async Task<IActionResult> AllOrders()
 		{
-			var buyOrders=_stocksService.ListBuyOrders();
-			var sellOrders=_stocksService.ListSellOrders();
-			Orders orders = new Orders() {
-			BuyOrders = buyOrders,
-			SellOrders = sellOrders
+			var buyOrders = await _stocksService.ListBuyOrders();
+			var sellOrders = await _stocksService.ListSellOrders();
+			Orders orders = new Orders()
+			{
+				BuyOrders = buyOrders,
+				SellOrders = sellOrders
 			};
 			return View(orders);
 		}
+		[Route("trade/GetPdf")]
+		public async Task<IActionResult> GetPdf()
+		{
+			var buyorders = await _stocksService.ListBuyOrders();
+			var sellOrders = await _stocksService.ListSellOrders();
+			Orders orders = new Orders()
+			{
+				BuyOrders = buyorders,
+				SellOrders = sellOrders
+			};
+			return new ViewAsPdf("GetPdf", orders, ViewData)
+			{
+				PageMargins = new Margins() { Bottom = 20, Left = 20, Right = 20, Top = 20 },
+				PageOrientation = Orientation.Landscape,
+			};
+			}
 	}
 }

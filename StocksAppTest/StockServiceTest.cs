@@ -18,16 +18,16 @@ namespace StocksAppTest
         }
 		#region CreateBuyOrder
 		[Fact]
-		public void CreateBuyOrder_NullArgument()
+		public async Task CreateBuyOrder_NullArgument()
 		{
 			BuyOrderRequest request = null;
-			 Assert.Throws<ArgumentNullException>( () =>
+			 await Assert.ThrowsAsync<ArgumentNullException>( async () =>
 			{
-				 stocksService.CreateBuyOrder(request);
+				 await stocksService.CreateBuyOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateBuyOrder_InvalidQuantity()
+		public async Task CreateBuyOrder_InvalidQuantity()
 		{
 			BuyOrderRequest request=new BuyOrderRequest() { 
 			Quantity=0,
@@ -36,13 +36,13 @@ namespace StocksAppTest
 			StockName="something",
 			StockSymbol="msft"
 			};
-			Assert.Throws<ArgumentException>( () =>
+			await Assert.ThrowsAsync<ArgumentException>( async () =>
 			{
-				stocksService.CreateBuyOrder(request);
+				await stocksService.CreateBuyOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateBuyOrder_InvalidQuantity2()
+		public async Task CreateBuyOrder_InvalidQuantity2()
 		{
 			BuyOrderRequest request = new BuyOrderRequest()
 			{
@@ -52,13 +52,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>( () =>
+			await Assert.ThrowsAsync<ArgumentException>( async () =>
 			{
-				stocksService.CreateBuyOrder(request);
+				await stocksService.CreateBuyOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateBuyOrder_InvalidPrice()
+		public async Task CreateBuyOrder_InvalidPrice()
 		{
 			BuyOrderRequest request = new BuyOrderRequest()
 			{
@@ -68,13 +68,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>(	 () =>
+			await Assert.ThrowsAsync<ArgumentException>(	 async () =>
 			{
-				stocksService.CreateBuyOrder(request);
+				await stocksService.CreateBuyOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateBuyOrder_InvalidPrice2()
+		public async Task CreateBuyOrder_InvalidPrice2()
 		{
 			BuyOrderRequest request = new BuyOrderRequest()
 			{
@@ -84,13 +84,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>( () =>
+			await Assert.ThrowsAsync<ArgumentException>( async () =>
 			{
-				 stocksService.CreateBuyOrder(request);
+				await  stocksService.CreateBuyOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateBuyOrder_NullSymbole()
+		public async Task CreateBuyOrder_NullSymbole()
 		{
 			BuyOrderRequest request = new BuyOrderRequest()
 			{
@@ -100,13 +100,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = null
 			};
-			Assert.Throws<ArgumentException>( () =>
+			await Assert.ThrowsAsync<ArgumentException>( async () =>
 			{
-				 stocksService.CreateBuyOrder(request);
+				await stocksService.CreateBuyOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateBuyOrder_InvalidDate()
+		public async Task CreateBuyOrder_InvalidDate()
 		{
 			BuyOrderRequest request = new BuyOrderRequest()
 			{
@@ -116,13 +116,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>( () =>
+			await Assert.ThrowsAsync<ArgumentException>( async () =>
 			{
-				 stocksService.CreateBuyOrder(request);
+				await stocksService.CreateBuyOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateBuyOrder_Proper()
+		public async Task CreateBuyOrder_Proper()
 		{
 			BuyOrderRequest request = new BuyOrderRequest()
 			{
@@ -132,24 +132,24 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			BuyOrderResponse response = stocksService.CreateBuyOrder(request);
-			List<BuyOrderResponse> responses =  stocksService.ListBuyOrders();
+			BuyOrderResponse response =await stocksService.CreateBuyOrder(request);
+			List<BuyOrderResponse> responses =await  stocksService.ListBuyOrders();
 			Assert.True(response.Id!=Guid.Empty);
 			Assert.Contains(response,responses);
 		}
 		#endregion
 		#region CreateSellOrder
 		[Fact]
-		public void CreateSellOrder_NullArgument()
+		public async Task CreateSellOrder_NullArgument()
 		{
 			SellOrderRequest request = null;
-			Assert.Throws<ArgumentNullException>(() =>
+			await Assert.ThrowsAsync<ArgumentNullException>(async () =>
 			{
-				stocksService.CreateSellOrder(request);
+			await	stocksService.CreateSellOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateSellOrder_InvalidQuantity()
+		public async Task CreateSellOrder_InvalidQuantity()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -159,13 +159,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>(() =>
+			await Assert.ThrowsAsync<ArgumentException>(async () =>
 			{
-				stocksService.CreateSellOrder(request);
+			await	stocksService.CreateSellOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateSellOrder_InvalidQuantity2()
+		public async Task CreateSellOrder_InvalidQuantity2()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -175,13 +175,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>(() =>
+			await Assert.ThrowsAsync<ArgumentException>(async () =>
 			{
-				stocksService.CreateSellOrder(request);
+			await	stocksService.CreateSellOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateSellOrder_InvalidPrice()
+		public async Task CreateSellOrder_InvalidPrice()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -191,13 +191,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>(() =>
+			await Assert.ThrowsAsync<ArgumentException>(async () =>
 			{
-				stocksService.CreateSellOrder(request);
+				await stocksService.CreateSellOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateSellOrder_InvalidPrice2()
+		public async Task CreateSellOrder_InvalidPrice2()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -207,13 +207,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>(() =>
+			await Assert.ThrowsAsync<ArgumentException>(async () =>
 			{
-				stocksService.CreateSellOrder(request);
+				await stocksService.CreateSellOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateSellOrder_NullSymbole()
+		public async Task CreateSellOrder_NullSymbole()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -223,13 +223,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = null
 			};
-			Assert.Throws<ArgumentException>(() =>
+			await Assert.ThrowsAsync<ArgumentException>(async () =>
 			{
-				stocksService.CreateSellOrder(request);
+				await stocksService.CreateSellOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateSellOrder_InvalidDate()
+		public async Task CreateSellOrder_InvalidDate()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -239,13 +239,13 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			Assert.Throws<ArgumentException>(() =>
+			await Assert.ThrowsAsync<ArgumentException>(async () =>
 			{
-				stocksService.CreateSellOrder(request);
+			await	stocksService.CreateSellOrder(request);
 			});
 		}
 		[Fact]
-		public void CreateSellOrder_Proper()
+		public async Task CreateSellOrder_Proper()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -255,21 +255,21 @@ namespace StocksAppTest
 				StockName = "something",
 				StockSymbol = "msft"
 			};
-			SellOrderResponse response = stocksService.CreateSellOrder(request);
-			List<SellOrderResponse> responses = stocksService.ListSellOrders();
+			SellOrderResponse response =await stocksService.CreateSellOrder(request);
+			List<SellOrderResponse> responses =await stocksService.ListSellOrders();
 			Assert.True(response.Id != Guid.Empty);
 			Assert.Contains(response, responses);
 		}
 		#endregion
 		#region GetBuyOrders
 		[Fact]
-		public void GetBuyOrders_EmptyList()
+		public async Task GetBuyOrders_EmptyList()
 		{
-			List<BuyOrderResponse> responses = stocksService.ListBuyOrders();
+			List<BuyOrderResponse> responses =await stocksService.ListBuyOrders();
 			Assert.Empty(responses);
 		}
 		[Fact]
-		public void GetBuyOrders_Proper()
+		public async Task GetBuyOrders_Proper()
 		{
 			BuyOrderRequest request = new BuyOrderRequest()
 			{
@@ -298,9 +298,9 @@ namespace StocksAppTest
 			List<BuyOrderRequest> requests=new List<BuyOrderRequest>() {request,request1,request2 };
 			List<BuyOrderResponse> buyOrders = new();
 			foreach (var req in requests) {
-			buyOrders.Add(stocksService.CreateBuyOrder(req));
+			buyOrders.Add(await stocksService.CreateBuyOrder(req));
 			}
-			List<BuyOrderResponse> responses = stocksService.ListBuyOrders();
+			List<BuyOrderResponse> responses =await stocksService.ListBuyOrders();
 			foreach (var response in responses) {
 			Assert.Contains(response,buyOrders);
 			}
@@ -308,13 +308,13 @@ namespace StocksAppTest
 		#endregion
 		#region GetSellOrders
 		[Fact]
-		public void GetSellOrders_EmptyList()
+		public async Task GetSellOrders_EmptyList()
 		{
-			List<SellOrderResponse> responses = stocksService.ListSellOrders();
+			List<SellOrderResponse> responses =await stocksService.ListSellOrders();
 			Assert.Empty(responses);
 		}
 		[Fact]
-		public void GetSellOrders_Proper()
+		public async Task GetSellOrders_Proper()
 		{
 			SellOrderRequest request = new SellOrderRequest()
 			{
@@ -344,9 +344,9 @@ namespace StocksAppTest
 			List<SellOrderResponse> sellOrders = new();
 			foreach (var req in requests)
 			{
-				sellOrders.Add(stocksService.CreateSellOrder(req));
+				sellOrders.Add( await stocksService.CreateSellOrder(req));
 			}
-			List<SellOrderResponse> responses = stocksService.ListSellOrders();
+			List<SellOrderResponse> responses =await stocksService.ListSellOrders();
 			foreach (var response in responses)
 			{
 				Assert.Contains(response, sellOrders);

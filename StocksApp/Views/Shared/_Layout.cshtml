@@ -46,6 +46,9 @@
                         <li><a href="~/Trade/AllOrders">Orders</a></li>
                     }
                 </ul>
+                <div class="flex-2">
+                    <a asp-controller="Trade" asp-action="GetPdf">Download as PDF</a>
+                </div>
             </div>
             @RenderBody()
         </div>
