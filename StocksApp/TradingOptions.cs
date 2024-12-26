@@ -2,6 +2,7 @@
 {
 	public class TradingOptions
 	{
-        public string? DefaultSymbol { get; set; }
-    }
+		public uint? DefaultOrderQuantity { get; set; }
+		public string? Top25PopularStocks { get; set; }
+	}
 }

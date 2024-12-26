@@ -25,15 +25,15 @@ namespace StocksApp.Controllers
 
 		[Route("/")]
 		[Route("trade/Index")]
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(string stocksymbole)
 		{
-			if (_tradingOptions.Value.DefaultSymbol == null)
-				_tradingOptions.Value.DefaultSymbol = "MSFT";
-			Dictionary<string, object> company = await _finnhubService.GetCompanyProfile(_tradingOptions.Value.DefaultSymbol);
-			Dictionary<string, object> data = await _finnhubService.GetStockPriceQuote(_tradingOptions.Value.DefaultSymbol);
+			if (stocksymbole == null)
+				stocksymbole = "MSFT";
+			Dictionary<string, object> company = await _finnhubService.GetCompanyProfile(stocksymbole);
+			Dictionary<string, object> data = await _finnhubService.GetStockPriceQuote(stocksymbole);
 			StockTrade stock = new StockTrade
 			{
-				StockSymbol = _tradingOptions.Value.DefaultSymbol,
+				StockSymbol = stocksymbole,
 			};
 			if (company != null && data != null)
 			{

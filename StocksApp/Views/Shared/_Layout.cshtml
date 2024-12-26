@@ -45,6 +45,14 @@
                     {
                         <li><a href="~/Trade/AllOrders">Orders</a></li>
                     }
+                    @if (ViewBag.CurrentUrl == "~/Stocks/Explore")
+                    {
+                        <li><a href="~/Stocks/Explore" class="nav-active">Explore</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="~/Stocks/Explore">Explore</a></li>
+                    }
                 </ul>
                 <div class="flex-2">
                     <a asp-controller="Trade" asp-action="GetPdf">Download as PDF</a>

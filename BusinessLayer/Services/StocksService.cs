@@ -3,6 +3,7 @@ using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Context;
 using ServiceLayer.Helpers;
+using ServiceLayer.RepositoyContracts;
 using ServiceLayer.ServiceContracts;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,18 @@ namespace ServiceLayer.Services
 {
 	public class StocksService : IStocksService
 	{
-		private readonly AppDbContext _appDbContext;
+		private readonly IStockRepository _stockRepository;
+
+		public StocksService(IStockRepository stockRepository)
+		{
+			_stockRepository = stockRepository;
+		}
 
 		public StocksService()
 		{
 
 		}
-		public StocksService(AppDbContext appDbContext)
-		{
-			_appDbContext = appDbContext;
-		}
+		
 
 		
 		public async Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? request)
@@ -32,8 +35,7 @@ namespace ServiceLayer.Services
 			ValidationHelper.ModelValidation(request);
 			BuyOrder order = request.ToBuyOrder();
 			order.Id = Guid.NewGuid();
-			await _appDbContext.BuyOrders.AddAsync(order);
-			await _appDbContext.SaveChangesAsync();
+			await _stockRepository.CreateBuyOrder(order);
 			return order.ToBuyOrderResponse();
 		}
 
@@ -43,20 +45,20 @@ namespace ServiceLayer.Services
 			ValidationHelper.ModelValidation(request);
 			SellOrder order = request.ToSellOrder();
 			order.Id = Guid.NewGuid();
-			await _appDbContext.SellOrders.AddAsync(order);
-			await _appDbContext.SaveChangesAsync();
+			await _stockRepository.CreateSellOrder(order);
 			return order.ToSellOrderResponse();
 		}
 
 		public async Task<List<BuyOrderResponse>> ListBuyOrders()
 		{
-			var result =await _appDbContext.BuyOrders.Select(bo => bo.ToBuyOrderResponse()).ToListAsync();
-			return result;
+			var result =await _stockRepository.GetAllBuyOrders();
+			return result.Select(bo => bo.ToBuyOrderResponse()).ToList();
 		}
 
 		public async Task<List<SellOrderResponse> > ListSellOrders()
 		{
-			return await _appDbContext.SellOrders.Select(so => so.ToSellOrderResponse()).ToListAsync();
+			var result = await _stockRepository.GetAllSellOrders();
+			return result.Select(bo => bo.ToSellOrderResponse()).ToList();
 		}
 	}
 }
