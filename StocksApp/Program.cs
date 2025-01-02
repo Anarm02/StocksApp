@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
+using Serilog;
 using ServiceLayer.Context;
 using ServiceLayer.Repositories;
 using ServiceLayer.RepositoyContracts;
@@ -15,6 +16,14 @@ namespace StocksApp
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+			 builder.Host.UseSerilog((HostBuilderContext context,IServiceProvider service,LoggerConfiguration configuration) =>
+			{
+				configuration.ReadFrom.Configuration(context.Configuration).ReadFrom.Services(service);
+			});
+			builder.Services.AddHttpLogging(opt =>
+			{
+				opt.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
+			});
 			builder.Services.AddControllersWithViews();
 			builder.Services.AddHttpClient();
 			builder.Services.AddScoped<IStockRepository,StockRepository>();
@@ -28,6 +37,7 @@ namespace StocksApp
 			var app = builder.Build();
 			if (builder.Environment.IsEnvironment("Test") == false)
 				RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+			app.UseHttpLogging();
 			app.UseStaticFiles();
 			app.UseRouting();
 			app.MapControllers();

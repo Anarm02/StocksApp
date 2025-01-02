@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using ServiceLayer.RepositoyContracts;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,18 @@ namespace ServiceLayer.Repositories
 	{
 		private readonly IHttpClientFactory _httpClientFactory;
 		private readonly IConfiguration _configuration;
-
-		public FinnhubRepostirory(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+		private readonly ILogger<FinnhubRepostirory> _logger;
+		public FinnhubRepostirory(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<FinnhubRepostirory> logger = null)
 		{
 			_httpClientFactory = httpClientFactory;
 			_configuration = configuration;
+			_logger = logger;
 		}
 
 		public async Task<Dictionary<string, object>?> GetCompanyProfile(string stockSymbol)
 		{
+			_logger.LogInformation("In {Controller}.{Action}",nameof(FinnhubRepostirory),nameof(GetCompanyProfile));
+			_logger.LogDebug("stockSymbol:{stockSymbol}", stockSymbol);
 			using (HttpClient httpClient = _httpClientFactory.CreateClient())
 			{
 				HttpRequestMessage httpRequestMessage = new HttpRequestMessage()

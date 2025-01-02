@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StocksApp", "StocksApp\Stoc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityLayer", "EntityLayer\EntityLayer.csproj", "{61E3D3EF-E830-4D59-ACF6-06A4AEA72F9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{26516373-2F20-46E0-B239-A1D6742A8E62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "ServiceLayer\RepositoryLayer.csproj", "{26516373-2F20-46E0-B239-A1D6742A8E62}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StocksAppTest", "StocksAppTest\StocksAppTest.csproj", "{6B36B403-09EC-4E36-BBF0-C6E85026B5D8}"
 EndProject

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
+    <ProjectReference Include="..\ServiceLayer\RepositoryLayer.csproj" />
   </ItemGroup>
 
 </Project>

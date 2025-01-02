@@ -1,30 +1,34 @@
-﻿
-const token = document.querySelector("#FinnhubToken").value;
-const socket = new WebSocket(`wss://ws.finnhub.io?token=${token}`);
-var stockSymbol = document.getElementById("StockSymbol").value; 
-socket.addEventListener('open', function (event) {
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': stockSymbol }))
-});
+﻿const prices = []; //new values will be added dynamically from server feed
+const labels = []; //new values will be added dynamically from server feed
 
-socket.addEventListener('message', function (event) {
-    if (event.data.type == "error") {
-        $(".price").text(event.data.msg);
-        return; 
-    }
-
-    var eventData = JSON.parse(event.data);
-    if (eventData) {
-        if (eventData.data) {
-            
-            var updatedPrice = JSON.parse(event.data).data[0].p;
-            $(".price").text(updatedPrice.toFixed(2)); 
-        }
-    }
-});
-
-var unsubscribe = function (symbol) {
-    socket.send(JSON.stringify({ 'type': 'unsubscribe', 'symbol': symbol }))
-}
-window.onunload = function () {
-    unsubscribe(stockSsymbol);
+//create chart date
+const chartData = {
+    labels: labels,
+    datasets: [{
+        label: 'Stock price',
+        data: prices,
+        fill: false,
+        borderColor: '#0a8ac6',
+        tension: 0.1
+    }]
 };
+
+//create chart options
+const chartOptions = {
+    scales: {
+        x: {
+            ticks: { display: false } //don't show x axis labels
+        }
+    },
+    plugins: { legend: { display: false } }, //don't show legend for x axis
+    tooltips: { mode: 'index' } //show price value as tooltip on hover on data points in the chart
+};
+
+const ctx = document.getElementById('stock-chart').getContext('2d');
+
+//line chart
+const chart = new Chart(ctx, { type: 'line', data: chartData, options: chartOptions });
+
+//display current date
+var d = new Date();
+document.querySelector(".date").innerText = d.toLocaleDateString();

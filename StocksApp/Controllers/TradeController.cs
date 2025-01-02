@@ -16,17 +16,22 @@ namespace StocksApp.Controllers
 		private readonly IFinnhubService _finnhubService;
 		private readonly IStocksService _stocksService;
 		private readonly IOptions<TradingOptions> _tradingOptions;
-		public TradeController(IFinnhubService finnhubService, IOptions<TradingOptions> tradingOptions, IStocksService stocksService)
+		private readonly ILogger<TradeController> _logger;
+		public TradeController(IFinnhubService finnhubService, IOptions<TradingOptions> tradingOptions, IStocksService stocksService, ILogger<TradeController> logger)
 		{
 			_finnhubService = finnhubService;
 			_tradingOptions = tradingOptions;
 			_stocksService = stocksService;
+			_logger = logger;
 		}
 
 		[Route("/")]
 		[Route("trade/Index")]
+		[Route("trade/[action]/{stockSymbole}")]
 		public async Task<IActionResult> Index(string stocksymbole)
 		{
+			_logger.LogInformation("In {Controller}.{Action}",nameof(TradeController),nameof(Index));
+			_logger.LogDebug("stocksymbole:{stocksymbole}",stocksymbole);
 			if (stocksymbole == null)
 				stocksymbole = "MSFT";
 			Dictionary<string, object> company = await _finnhubService.GetCompanyProfile(stocksymbole);
