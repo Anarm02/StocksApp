@@ -26,6 +26,8 @@
                         <h5 class="mb"><span class="text-grey">Trade Amount: </span> $@buyOrder.TradeAmount.ToString("N")</h5>
 
                         <div class="text-grey">@buyOrder.DateAndTimeOfOrder.ToString("dd MMMM yyyy hh:mm:ss tt")</div>
+                        <a asp-controller="Trade" asp-action="DeleteBuyOrder" asp-route-id="@buyOrder.Id" class="link-hover">Delete</a>
+
                     </div>
                 }
                 @if (Model.BuyOrders.Count == 0)
@@ -51,6 +53,7 @@
                         <h5 class="mb"><span class="text-grey">Trade Amount: </span> $@sellOrder.TradeAmount.ToString("N")</h5>
 
                         <div class="text-grey">@sellOrder.DateAndTimeOfOrder.ToString("dd MMMM yyyy hh:mm:ss tt")</div>
+                        <a asp-controller="Trade" asp-action="DeleteSellOrder" asp-route-id="@sellOrder.Id" class="link-hover">Delete</a>
                     </div>
                 }
                 @if (Model.SellOrders.Count == 0)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.DTOs
 {
-	public class BuyOrderRequest
+	public class BuyOrderRequest:IOrderRequest
 	{
 		[Required(ErrorMessage = "Stock symbol can't be empty")]
 		public string StockSymbol { get; set; }

@@ -25,20 +25,32 @@ namespace ServiceLayer.Repositories
 			await _appDbContext.SaveChangesAsync();
 			return buyOrder;
 		}
-
+		
 		public async Task<SellOrder> CreateSellOrder(SellOrder sellOrder)
 		{
 			await _appDbContext.SellOrders.AddAsync(sellOrder);
 			await _appDbContext.SaveChangesAsync();
 			return sellOrder;
 		}
-
+		public async Task<bool> DeleteBuyOrder(Guid id)
+		{
+			var order=await _appDbContext.BuyOrders.FirstOrDefaultAsync(x => x.Id==id);
+			_appDbContext.BuyOrders.Remove(order);
+			int count=await _appDbContext.SaveChangesAsync();
+			return count > 0;
+		}
 		public async Task<List<BuyOrder>> GetAllBuyOrders()
 		{
 			var orders = await _appDbContext.BuyOrders.ToListAsync();
 			return orders;
 		}
-
+		public async Task<bool> DeleteSellOrder(Guid id)
+		{
+			var order = await _appDbContext.SellOrders.FirstOrDefaultAsync(x => x.Id == id);
+			_appDbContext.SellOrders.Remove(order);
+			int count = await _appDbContext.SaveChangesAsync();
+			return count > 0;
+		}
 		public async Task<List<SellOrder>> GetAllSellOrders()
 		{
 			var orders = await _appDbContext.SellOrders.ToListAsync();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using StocksApp.Filters.ActionFilters;
 using StocksApp.Models;
 using StocksApp.ServiceContracts;
 
@@ -21,6 +22,7 @@ namespace StocksApp.Controllers
 		[Route("stocks")]
 		[Route("[action]/{stock?}")]
 		[Route("~/[action]/{stock?}")]
+		[TypeFilter(typeof(ExploreActionFilter))]
 		public async Task<IActionResult> Explore(string? stock, bool showAll = false)
 		{
 			_logger.LogInformation("{Controller}.{Action}",nameof(StocksController),nameof(Explore));
@@ -49,7 +51,6 @@ namespace StocksApp.Controllers
 				.ToList();
 			}
 
-			ViewBag.stock = stock;
 			return View(stocks);
 		}
 	}

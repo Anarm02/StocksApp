@@ -13,5 +13,7 @@ namespace ServiceLayer.ServiceContracts
 		Task<SellOrderResponse> CreateSellOrder(SellOrderRequest? request);
 		Task<List<BuyOrderResponse>> ListBuyOrders();
 		Task<List<SellOrderResponse>> ListSellOrders();
+		Task<bool> DeleteBuyOrder(Guid? id);
+		Task<bool> DeleteSellOrder(Guid? id);
 	}
 }

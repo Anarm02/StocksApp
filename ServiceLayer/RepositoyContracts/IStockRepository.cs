@@ -13,5 +13,7 @@ namespace ServiceLayer.RepositoyContracts
 		Task<SellOrder> CreateSellOrder(SellOrder sellOrder);
 		Task<List<BuyOrder>> GetAllBuyOrders();
 		Task<List<SellOrder>> GetAllSellOrders();
+		Task<bool> DeleteBuyOrder(Guid id);
+		Task<bool> DeleteSellOrder(Guid id);
 	}
 }

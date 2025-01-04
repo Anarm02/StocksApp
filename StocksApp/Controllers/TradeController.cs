@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using ServiceLayer.ServiceContracts;
+using StocksApp.Filters.ActionFilters;
 using StocksApp.Models;
 using StocksApp.ServiceContracts;
 using StocksApp.Services;
@@ -49,36 +50,18 @@ namespace StocksApp.Controllers
 		}
 		[Route("trade/BuyOrder")]
 		[HttpPost]
-		public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrder)
+		[TypeFilter(typeof(CreateBuyAndSellOrderActionFilter))]
+		public async Task<IActionResult> BuyOrder(BuyOrderRequest order)
 		{
-			buyOrder.DateAndTimeOfOrder = DateTime.Now;
-			ModelState.Clear();
-			TryValidateModel(buyOrder);
-			if (!ModelState.IsValid)
-			{
-				ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-				StockTrade stockTrade = new StockTrade() { StockName = buyOrder.StockName, Quantity = buyOrder.Quantity, StockSymbol = buyOrder.StockSymbol };
-				return View("Index", stockTrade);
-			}
-
-			var result = await _stocksService.CreateBuyOrder(buyOrder);
+			var result = await _stocksService.CreateBuyOrder(order);
 			return RedirectToAction("AllOrders");
 		}
 		[Route("trade/SellOrder")]
 		[HttpPost]
-		public async Task<IActionResult> SellOrder(SellOrderRequest sellOrder)
-		{
-			sellOrder.DateAndTimeOfOrder = DateTime.Now;
-			ModelState.Clear();
-			TryValidateModel(sellOrder);
-			if (!ModelState.IsValid)
-			{
-				ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-				StockTrade stockTrade = new StockTrade() { StockName = sellOrder.StockName, Quantity = sellOrder.Quantity, StockSymbol = sellOrder.StockSymbol };
-				return View("index", stockTrade);
-			}
-
-			var result = await _stocksService.CreateSellOrder(sellOrder);
+		[TypeFilter(typeof(CreateBuyAndSellOrderActionFilter))]
+		public async Task<IActionResult> SellOrder(SellOrderRequest order)
+		{	
+			var result = await _stocksService.CreateSellOrder(order);
 			return RedirectToAction("AllOrders");
 		}
 		[Route("trade/AllOrders")]
@@ -109,5 +92,23 @@ namespace StocksApp.Controllers
 				PageOrientation = Orientation.Landscape,
 			};
 			}
+		[HttpGet]
+		[Route("[controller]/[action]/{id}")]
+		public async Task<IActionResult> DeleteBuyOrder(Guid id)
+		{
+			await _stocksService.DeleteBuyOrder(id);
+			return RedirectToAction("AllOrders");
+		}
+		[HttpGet]
+		[Route("[controller]/[action]/{id}")]
+		public async Task<IActionResult> DeleteSellOrder(Guid id)
+		{
+			await _stocksService.DeleteSellOrder(id);
+			return RedirectToAction("AllOrders");
+		}
+
+
 	}
-}
+
+	}
+

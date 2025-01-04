@@ -48,7 +48,16 @@ namespace ServiceLayer.Services
 			await _stockRepository.CreateSellOrder(order);
 			return order.ToSellOrderResponse();
 		}
-
+		public async Task<bool> DeleteSellOrder(Guid? id)
+		{
+			if (id == null) throw new ArgumentNullException("Id is null");
+			return await _stockRepository.DeleteSellOrder(id.Value);
+		}
+		public async Task<bool> DeleteBuyOrder(Guid? id)
+		{
+			if (id == null) throw new ArgumentNullException("Id is null");
+			return await _stockRepository.DeleteBuyOrder(id.Value);
+		}
 		public async Task<List<BuyOrderResponse>> ListBuyOrders()
 		{
 			var result =await _stockRepository.GetAllBuyOrders();
